@@ -95,6 +95,7 @@ items:
 - **Advocate for the user when the review is adversarial.** If the review is going to be shared with someone (school district, vendor, etc.), don't phrase things in ways that give the other side ammunition. Ask if you're uncertain.
 - **Keep titles short.** They render in ~10pt bold; long titles wrap awkwardly.
 - **Commit regularly.** The git log becomes the record of how the review evolved.
+- **Treat the engine as a starting point, not a frozen tool.** The code in `engine/` is yours to modify. If the user wants a different highlight color, a different gutter width, a new highlight type, a tweak to the layout algorithm, or a feature that doesn't exist — edit the engine. Commit the change. Don't apologize for the tool's limits when you could lift them in a few lines. The whole point of clone-per-PDF is that each review repo can evolve to fit its document.
 
 ### 9. Known limitations (mention if relevant)
 
