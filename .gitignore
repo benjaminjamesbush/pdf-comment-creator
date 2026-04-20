@@ -5,6 +5,3 @@ venv/
 
 # Generated output PDFs (the input source.pdf is tracked; outputs aren't)
 examples/*/output.pdf
-
-# Local Claude Code session file (not part of the shared tool)
-CLAUDE.md
