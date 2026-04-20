@@ -1,0 +1,127 @@
+source: source.pdf
+output: output.pdf
+
+items:
+  # --- Page 1: showcase `search` ------------------------------------------
+
+  - key: intro_purpose
+    page: 1
+    title: "search highlight"
+    highlight:
+      type: search
+      text: "takes a source PDF and a YAML file describing review comments"
+    body: |
+      This comment uses the `search` highlight type. The engine calls
+      page.search_for("...") and highlights whatever rectangles come back.
+      A thin red line connects this comment to the highlighted passage on
+      the left. That's about 90% of what you'll ever need.
+
+  - key: intro_workflow
+    page: 1
+    title: "clone-per-PDF in practice"
+    highlight:
+      type: search
+      text: "clone this repository"
+    body: |
+      The clone-per-PDF workflow means this tool is designed to be forked
+      once per document you review. The resulting repo contains everything:
+      the source PDF, the YAML config, and the engine code that produced
+      the output. Collaborators can reproduce your review with one
+      `git clone` and `python run.py review.yaml`.
+
+  # --- Page 2: showcase line_contains, row_span, rect ---------------------
+
+  - key: search_explained
+    page: 2
+    title: "search handles fragment rects"
+    highlight:
+      type: search
+      text: "unioned into a single anchor rect"
+    body: |
+      PyMuPDF's search sometimes returns several rectangles for a single
+      phrase (one per font run). The engine treats the union of all
+      fragment rects as the canonical anchor, so the connector line always
+      aims at the full highlighted span.
+
+  - key: line_contains_explained
+    page: 2
+    title: "line_contains: the ligature workaround"
+    highlight:
+      type: line_contains
+      contains: "ligature glyphs"
+    body: |
+      This comment's highlight uses `line_contains` instead of `search`.
+      It scans every text line on the page and returns the bounding box
+      of the first one that contains the given substring. Useful when
+      page.search_for can't find a phrase due to ligature glyphs (e.g.,
+      'fi', 'ti') being encoded as single characters the plain text
+      search doesn't match.
+
+  - key: row_span_explained
+    page: 2
+    title: "row_span: full-row form highlight"
+    highlight:
+      type: row_span
+      left: "Primary shipping method:"
+      right: "Overnight"
+    body: |
+      Form rows like the one shown (a question with checkbox options)
+      often need a single highlight spanning the whole row. The
+      `row_span` type takes two anchor strings: the left anchor defines
+      the y-range and left edge, the right anchor defines the right
+      edge. Common for IEP and other structured-form reviews.
+
+  - key: rect_explained
+    page: 2
+    title: "rect: explicit coordinates"
+    highlight:
+      type: rect
+      x0: 54
+      y0: 670
+      x1: 555
+      y1: 720
+    body: |
+      The `rect` type is the escape hatch. You provide x0, y0, x1, y1 in
+      page coordinates (top-left origin, in points). Use it only when
+      the other three types won't work — it's brittle against source-PDF
+      changes.
+
+  # --- Page 3: showcase layout behavior -----------------------------------
+
+  - key: layout_algo
+    page: 3
+    title: "the layout algorithm"
+    highlight:
+      type: search
+      text: "least-squares pool-adjacent-violators algorithm"
+    body: |
+      When multiple comments on the same page compete for nearby vertical
+      positions, the engine minimizes the sum of squared displacements
+      from each comment's ideal y. See #layout_tradeoff for what that
+      looks like in practice.
+
+  - key: layout_tradeoff
+    page: 3
+    title: "fair tradeoffs in action"
+    highlight:
+      type: search
+      text: "every comment ends up closer to its highlight"
+    body: |
+      This comment and #layout_algo are anchored to passages only a few
+      lines apart. Notice how both comments drift slightly from their
+      exact ideal positions so neither has to be pushed far down. On a
+      crowded page, every comment pays a little so no single comment
+      pays a lot.
+
+  - key: layout_wrap
+    page: 3
+    title: "body text wraps automatically"
+    highlight:
+      type: search
+      text: "using real font metrics"
+    body: |
+      Write body text as natural prose in the YAML file. Paragraphs are
+      separated by blank lines. The engine wraps each paragraph to the
+      gutter width using fitz.get_text_length with the real font metrics
+      of the render font. No manual line breaks needed — wrapping is a
+      layout concern, not a content concern.

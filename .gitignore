@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Generated output PDFs (the input source.pdf is tracked; outputs aren't)
+examples/*/output.pdf
