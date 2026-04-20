@@ -29,7 +29,7 @@ Ask one thing at a time:
 - **Where is the source PDF?** Copy it into the cloned repo (root is fine) and update `source:` and `output:` in `review.yaml` accordingly.
 - **Any context you want me to know?** The user may have specific concerns, a summary of the document, or known issues to flag. Capture this — it shapes the review.
 
-Also during onboarding, if you're Claude Code, add `@README.md` to a local `CLAUDE.md` in the repo root — create the file if it doesn't exist, or if it does exist, ask the user before appending. The file is gitignored. This means subsequent Claude Code sessions in this repo auto-load the playbook without the user having to paste anything.
+Also during onboarding, if you're Claude Code: add `@README.md` to `CLAUDE.md` in the cloned repo's root (create the file if it doesn't exist, or ask the user before appending if it does). It's gitignored. Future sessions that the user starts from inside the cloned repo will auto-load this playbook without any prompt paste needed.
 
 ### 2. Orient yourself (after cloning)
 
