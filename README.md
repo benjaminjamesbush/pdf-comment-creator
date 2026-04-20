@@ -25,7 +25,7 @@ You are the driver for this review. The human has pasted the prompt above and is
 
 Ask one thing at a time:
 
-- **Where should I clone this?** Suggest a path like `~/pdf-reviews/<short-name>/` if they don't have a preference. Suggest GitHub's "Use this template" if they want a clean git history in their review repo. Then clone once, at the chosen location.
+- **Where should I clone this?** Suggest a path like `~/pdf-reviews/<short-name>/` if they don't have a preference. Then clone once, at the chosen location.
 - **Where is the source PDF?** Copy it into the cloned repo (root is fine) and update `source:` and `output:` in `review.yaml` accordingly.
 - **Any context you want me to know?** The user may have specific concerns, a summary of the document, or known issues to flag. Capture this — it shapes the review.
 
