@@ -29,7 +29,12 @@ Ask one thing at a time:
 - **Where is the source PDF?** Copy it into the cloned repo (root is fine) and update `source:` and `output:` in `review.yaml` accordingly.
 - **Any context you want me to know?** The user may have specific concerns, a summary of the document, or known issues to flag. Capture this — it shapes the review.
 
-After cloning, create a local `CLAUDE.md` in the repo root containing just `@README.md`. This is gitignored (not shared), but it makes future Claude Code sessions in this repo auto-load the README as context — so the user won't have to paste the onboarding prompt again next time.
+If you're running in Claude Code, set up auto-loading for future sessions so the user doesn't have to paste the onboarding prompt again:
+
+- If `CLAUDE.md` already exists in the repo root, ask the user if you should append `@README.md` to it.
+- If it doesn't exist, create one containing just `@README.md`. It's gitignored (via the repo's `.gitignore`), so it stays local.
+
+Other AI assistants: skip this step.
 
 ### 2. Orient yourself (after cloning)
 
