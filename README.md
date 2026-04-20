@@ -7,7 +7,7 @@ Designed for human + AI collaboration. Reviews are written as YAML; iterating on
 ## Quick start
 
 ```bash
-git clone https://github.com/YOUR-ORG/pdf-comment-creator.git my-review
+git clone https://github.com/benjaminjamesbush/pdf-comment-creator.git my-review
 cd my-review
 pip install -r requirements.txt
 
@@ -42,9 +42,9 @@ items:
   - key: my_comment               # stable identifier, referenced by #my_comment
     page: 3                       # 1-indexed page number
     title: "Short heading"        # rendered bold red at the top of the comment
-    highlight:                    # what to highlight — see below
-      type: search
-      text: "the exact passage"
+    highlights:                   # one or more passages to highlight (see below)
+      - type: search
+        text: "the exact passage"
     body: |
       Paragraphs of commentary go here. Write naturally — the engine
       wraps to the gutter width using real font metrics.
@@ -69,7 +69,7 @@ Use `#key` in body text to reference another item by its current number. The eng
 ## What the engine does
 
 1. **Widens every page** by 50% on the right to create a gutter (original content is untouched).
-2. **Applies highlights** on the left side, one per item, in the configured pinkish-red.
+2. **Applies highlights** on the left side (one or more per item) in the configured pinkish-red; the first highlight is the anchor for the connector line.
 3. **Sorts items by (page, anchor y)** so gutter order follows highlight order top-to-bottom.
 4. **Lays out each page's gutter notes** using least-squares placement with ordering and no-overlap constraints. When items compete for the same vertical region, each drifts slightly from its ideal y so every comment ends up as close to its highlight as the constraints allow.
 5. **Draws connector lines** from each comment's title to the closest point on its highlight.
