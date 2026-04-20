@@ -29,6 +29,8 @@ Ask one thing at a time:
 - **Where is the source PDF?** Copy it into the cloned repo (root is fine) and update `source:` and `output:` in `review.yaml` accordingly.
 - **Any context you want me to know?** The user may have specific concerns, a summary of the document, or known issues to flag. Capture this — it shapes the review.
 
+After cloning, create a local `CLAUDE.md` in the repo root containing just `@README.md`. This is gitignored (not shared), but it makes future Claude Code sessions in this repo auto-load the README as context — so the user won't have to paste the onboarding prompt again next time.
+
 ### 2. Orient yourself (after cloning)
 
 Once the repo is cloned, open **`examples/sample/output.pdf`** — a self-aware tutorial whose own margin comments explain how the tool works. Skim it so you know what outputs look like. Also glance at **`examples/sample/review.yaml`** alongside the output to see how YAML maps to rendered page.
