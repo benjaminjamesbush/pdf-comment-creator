@@ -11,12 +11,11 @@ The intended workflow is to start a session with an AI (Claude, ChatGPT, Copilot
 > 1. Clone `https://github.com/benjaminjamesbush/pdf-comment-creator` into a new folder (or "Use this template" on GitHub if I want a clean history).
 > 2. Read the README so you understand how the tool works.
 > 3. I'll drop my source PDF into the repo root. Update `review.yaml` so it points at that file.
-> 4. Read the PDF and draft an initial set of review comments in `review.yaml`. Use the four highlight types (`search`, `line_contains`, `row_span`, `rect`) as appropriate.
-> 5. Run `python run.py review.yaml` and open the output in my browser.
-> 6. Let's iterate — I'll give feedback ("rewrite item 3", "this is too strongly worded", "add a comment on page 5 about X") and you adjust the YAML and re-render.
-> 7. Commit regularly so we have a history of the review's evolution.
+> 4. Read the PDF carefully, then let me know when you're ready and we can start discussing the contents together.
+> 5. As we talk, add/edit items in `review.yaml`, run `python run.py review.yaml`, and open the output in my browser so I can see each change land.
+> 6. Commit regularly so we have a history of the review's evolution.
 
-Most iteration happens on `review.yaml` — add/remove/reword items, change highlight anchors, reorder, refine. The AI edits the config, re-runs the engine, and shows you the new output. Because the config is text, every change is a small git diff.
+Almost all iteration happens on `review.yaml` — adding items, rewording them, moving them, changing highlight anchors. You'll edit the config, re-run the engine, and show me the new output. Because the config is text, every change is a small git diff.
 
 ## Trying it without an AI
 
