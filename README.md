@@ -1,34 +1,41 @@
 # pdf-comment-creator
 
-Annotate a PDF by widening each page with a right-side gutter, highlighting passages of interest, and placing aligned comments in the new margin. Each comment is connected to its highlighted passage by a thin line.
+A **human + AI collaboration tool** for reviewing PDFs. A PDF is widened with a right-side gutter, passages are highlighted, and comments are placed in the new margin — each connected to its highlighted passage by a thin line. Comments are written as YAML, which means iterating on a review with an AI assistant produces small, reviewable git diffs.
 
-Designed for human + AI collaboration. Reviews are written as YAML; iterating on a review is a git-friendly activity with small, reviewable diffs.
+## How to use it (with an AI assistant)
 
-## Quick start
+The intended workflow is to start a session with an AI (Claude, ChatGPT, Copilot, etc.) and have it drive the repo on your behalf. Paste a prompt like this into your AI assistant:
+
+> Hi Claude, I'd like to review a PDF with you.
+>
+> 1. Clone `https://github.com/benjaminjamesbush/pdf-comment-creator` into a new folder (or "Use this template" on GitHub if I want a clean history).
+> 2. Read the README so you understand how the tool works.
+> 3. I'll drop my source PDF into the repo root. Update `review.yaml` so it points at that file.
+> 4. Read the PDF and draft an initial set of review comments in `review.yaml`. Use the four highlight types (`search`, `line_contains`, `row_span`, `rect`) as appropriate.
+> 5. Run `python run.py review.yaml` and open the output in my browser.
+> 6. Let's iterate — I'll give feedback ("rewrite item 3", "this is too strongly worded", "add a comment on page 5 about X") and you adjust the YAML and re-render.
+> 7. Commit regularly so we have a history of the review's evolution.
+
+Most iteration happens on `review.yaml` — add/remove/reword items, change highlight anchors, reorder, refine. The AI edits the config, re-runs the engine, and shows you the new output. Because the config is text, every change is a small git diff.
+
+## Trying it without an AI
+
+If you want to see the tool in action before starting a real review:
 
 ```bash
-git clone https://github.com/benjaminjamesbush/pdf-comment-creator.git my-review
-cd my-review
+git clone https://github.com/benjaminjamesbush/pdf-comment-creator.git
+cd pdf-comment-creator
 pip install -r requirements.txt
-
-# Regenerate the sample output
-python examples/sample/generate_source.py
 python run.py examples/sample/review.yaml
 ```
 
-Open `examples/sample/output.pdf` to see the self-aware tutorial — a PDF whose own margin comments explain how the tool works.
+Open `examples/sample/output.pdf` — a self-aware tutorial whose own margin comments explain how the tool works.
 
 ## Clone-per-PDF workflow
 
-This repo is designed to be cloned (or used as a GitHub template) once per document you want to review.
+This repo is designed to be cloned (or used as a GitHub template) **once per document** you want to review. Each review ends up as its own self-contained repo: source PDF, `review.yaml`, engine code, and git history of the review's evolution. Collaborators can reproduce your output with a single `git clone` + `python run.py review.yaml`.
 
-1. **"Use this template"** on GitHub for a clean history, or clone + `git remote rename origin upstream` + add your own origin.
-2. Drop your source PDF into the repo root (or a subdirectory — the YAML is referenced relative to its own location).
-3. Create a `review.yaml` modeled on `examples/sample/review.yaml`.
-4. Run `python run.py review.yaml` to produce the annotated output.
-5. Commit iteratively as you refine your review. The git history becomes the record of how the review evolved.
-
-The engine code travels with your review. Anyone who clones your review repo can reproduce the annotated PDF with the same engine version that produced it.
+Because the engine travels with each review, upgrades don't propagate automatically. Pull from upstream when you want a newer engine; pin by commit if you want reproducibility.
 
 ## Writing a review
 
