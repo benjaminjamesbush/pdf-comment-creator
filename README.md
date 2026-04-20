@@ -21,22 +21,23 @@ That's it. The AI will ask you where to clone, where your PDF is, and when you'r
 
 You are the driver for this review. The human has pasted the prompt above and is waiting for you to take charge. Follow this playbook.
 
-### 1. Orient yourself
+### 1. Onboard the user
 
-Clone the repo (or make sure you have a local copy), then look at **`examples/sample/output.pdf`** — it's a self-aware tutorial whose own margin comments explain how the tool works. Read it before writing any YAML. The sample also demonstrates each of the four highlight types in action.
+Ask one thing at a time:
 
-Also read **`examples/sample/review.yaml`** alongside the tutorial output so you can see how the YAML maps to what's rendered on the page.
-
-### 2. Onboard the user
-
-Ask the user (one thing at a time is fine):
-
-- **Where should I clone this?** Suggest a path like `~/pdf-reviews/<short-name>/` if they don't have a preference. Use GitHub's "Use this template" if they want a clean git history in their review repo.
-- **Where is the source PDF?** Get the path. Copy it into the cloned repo (root is fine) and update `source:` and `output:` in `review.yaml` accordingly.
+- **Where should I clone this?** Suggest a path like `~/pdf-reviews/<short-name>/` if they don't have a preference. Suggest GitHub's "Use this template" if they want a clean git history in their review repo. Then clone once, at the chosen location.
+- **Where is the source PDF?** Copy it into the cloned repo (root is fine) and update `source:` and `output:` in `review.yaml` accordingly.
 - **Any context you want me to know?** The user may have specific concerns, a summary of the document, or known issues to flag. Capture this — it shapes the review.
-- **Ready to dig in?** Open the PDF, read it carefully, then tell the user you're ready and invite them to start walking through it with you.
 
-### 3. Iterate on `review.yaml`
+### 2. Orient yourself (after cloning)
+
+Once the repo is cloned, open **`examples/sample/output.pdf`** — a self-aware tutorial whose own margin comments explain how the tool works. Skim it so you know what outputs look like. Also glance at **`examples/sample/review.yaml`** alongside the output to see how YAML maps to rendered page.
+
+### 3. Read the user's PDF and start the discussion
+
+Read the user's PDF carefully, then tell them you're ready and invite them to start walking through it with you. Let comments emerge from the conversation — don't draft a bunch of them unilaterally.
+
+### 4. Iterate on `review.yaml`
 
 The review is a conversation. Don't draft a bunch of comments unilaterally — let them emerge from discussion. When a comment is agreed on, add it to `review.yaml`, run `python run.py review.yaml`, and open the output for the user to see.
 
@@ -45,7 +46,7 @@ Rhythm:
 - Use cross-references (`#key`) in body text when one comment refers to another by number; the engine resolves them at render time, so reorderings don't break refs.
 - Commit after every meaningful change so the git log narrates the review.
 
-### 4. YAML schema
+### 5. YAML schema
 
 ```yaml
 source: path/to/source.pdf        # relative to the YAML file
@@ -65,7 +66,7 @@ items:
       Blank lines between paragraphs produce paragraph breaks in the output.
 ```
 
-### 5. Highlight types
+### 6. Highlight types
 
 | Type | When to use | Required fields |
 |------|-------------|-----------------|
@@ -76,7 +77,7 @@ items:
 
 `search` returns the union of all fragment rectangles PyMuPDF finds, so the connector line aims at the full span even when the phrase is split across multiple rects.
 
-### 6. What the engine does (so you can explain it if asked)
+### 7. What the engine does (so you can explain it if asked)
 
 1. Widens every page by 50% on the right to add a gutter. Original content is untouched.
 2. Applies highlights on the left side (one or more per item) in a desaturated red. The first highlight is the connector anchor.
@@ -85,7 +86,7 @@ items:
 5. Draws a thin connector line from each comment's title to the closest point on its highlight.
 6. Fills pages with no items with a faded `NO COMMENTS ON THIS PAGE` label so layout stays consistent.
 
-### 7. Behavior you should adopt
+### 8. Behavior you should adopt
 
 - **Don't unilaterally add comments.** Every comment emerges from the conversation with the user.
 - **Show the output after every change.** Don't batch multiple edits before re-rendering.
@@ -95,7 +96,7 @@ items:
 - **Keep titles short.** They render in ~10pt bold; long titles wrap awkwardly.
 - **Commit regularly.** The git log becomes the record of how the review evolved.
 
-### 8. Known limitations (mention if relevant)
+### 9. Known limitations (mention if relevant)
 
 - Only tested with US-letter pages (612×792 pt).
 - If a page has more comments than can fit vertically, the last ones may overlap — the layout algorithm does best-effort compression but doesn't guarantee fit.
