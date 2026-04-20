@@ -40,7 +40,7 @@ class Item:
     key: str
     page: int
     title: str
-    highlight: dict
+    highlights: list[dict]        # list of highlight specs; first is the anchor
     body: str = ""
 
 
@@ -83,19 +83,23 @@ def load(path: str | Path) -> ReviewConfig:
     seen_keys: set[str] = set()
     for i, entry in enumerate(raw["items"]):
         where = f"items[{i}]"
-        for k in ("key", "page", "title", "highlight"):
+        for k in ("key", "page", "title", "highlights"):
             if k not in entry:
                 raise ValueError(f"{where}: missing field '{k}'")
         if entry["key"] in seen_keys:
             raise ValueError(f"{where}: duplicate key '{entry['key']}'")
         seen_keys.add(entry["key"])
-        _validate_highlight(entry["highlight"], where)
+        highlights = entry["highlights"]
+        if not isinstance(highlights, list) or not highlights:
+            raise ValueError(f"{where}: 'highlights' must be a non-empty list")
+        for j, h in enumerate(highlights):
+            _validate_highlight(h, f"{where}.highlights[{j}]")
         items.append(
             Item(
                 key=entry["key"],
                 page=int(entry["page"]),
                 title=entry["title"],
-                highlight=entry["highlight"],
+                highlights=highlights,
                 body=entry.get("body", ""),
             )
         )

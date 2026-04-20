@@ -7,9 +7,9 @@ items:
   - key: intro_purpose
     page: 1
     title: "search highlight"
-    highlight:
-      type: search
-      text: "takes a source PDF and a YAML file describing review comments"
+    highlights:
+      - type: search
+        text: "takes a source PDF and a YAML file describing review comments"
     body: |
       This comment uses the `search` highlight type. The engine calls
       page.search_for("...") and highlights whatever rectangles come back.
@@ -19,9 +19,9 @@ items:
   - key: intro_workflow
     page: 1
     title: "clone-per-PDF in practice"
-    highlight:
-      type: search
-      text: "clone this repository"
+    highlights:
+      - type: search
+        text: "clone this repository"
     body: |
       The clone-per-PDF workflow means this tool is designed to be forked
       once per document you review. The resulting repo contains everything:
@@ -34,9 +34,9 @@ items:
   - key: search_explained
     page: 2
     title: "search handles fragment rects"
-    highlight:
-      type: search
-      text: "unioned into a single anchor rect"
+    highlights:
+      - type: search
+        text: "unioned into a single anchor rect"
     body: |
       PyMuPDF's search sometimes returns several rectangles for a single
       phrase (one per font run). The engine treats the union of all
@@ -46,9 +46,9 @@ items:
   - key: line_contains_explained
     page: 2
     title: "line_contains: the ligature workaround"
-    highlight:
-      type: line_contains
-      contains: "ligature glyphs"
+    highlights:
+      - type: line_contains
+        contains: "ligature glyphs"
     body: |
       This comment's highlight uses `line_contains` instead of `search`.
       It scans every text line on the page and returns the bounding box
@@ -60,10 +60,10 @@ items:
   - key: row_span_explained
     page: 2
     title: "row_span: full-row form highlight"
-    highlight:
-      type: row_span
-      left: "Primary shipping method:"
-      right: "Overnight"
+    highlights:
+      - type: row_span
+        left: "Primary shipping method:"
+        right: "Overnight"
     body: |
       Form rows like the one shown (a question with checkbox options)
       often need a single highlight spanning the whole row. The
@@ -74,12 +74,12 @@ items:
   - key: rect_explained
     page: 2
     title: "rect: explicit coordinates"
-    highlight:
-      type: rect
-      x0: 54
-      y0: 670
-      x1: 555
-      y1: 720
+    highlights:
+      - type: rect
+        x0: 54
+        y0: 670
+        x1: 555
+        y1: 720
     body: |
       The `rect` type is the escape hatch. You provide x0, y0, x1, y1 in
       page coordinates (top-left origin, in points). Use it only when
@@ -91,9 +91,9 @@ items:
   - key: layout_algo
     page: 3
     title: "the layout algorithm"
-    highlight:
-      type: search
-      text: "least-squares pool-adjacent-violators algorithm"
+    highlights:
+      - type: search
+        text: "least-squares pool-adjacent-violators algorithm"
     body: |
       When multiple comments on the same page compete for nearby vertical
       positions, the engine minimizes the sum of squared displacements
@@ -103,9 +103,9 @@ items:
   - key: layout_tradeoff
     page: 3
     title: "fair tradeoffs in action"
-    highlight:
-      type: search
-      text: "every comment ends up closer to its highlight"
+    highlights:
+      - type: search
+        text: "every comment ends up closer to its highlight"
     body: |
       This comment and #layout_algo are anchored to passages only a few
       lines apart. Notice how both comments drift slightly from their
@@ -116,9 +116,9 @@ items:
   - key: layout_wrap
     page: 3
     title: "body text wraps automatically"
-    highlight:
-      type: search
-      text: "using real font metrics"
+    highlights:
+      - type: search
+        text: "using real font metrics"
     body: |
       Write body text as natural prose in the YAML file. Paragraphs are
       separated by blank lines. The engine wraps each paragraph to the

@@ -18,17 +18,23 @@ def build_review(config_path: str | Path) -> Path:
     cfg = load(config_path)
     doc = fitz.open(cfg.source)
 
-    # 1. Apply highlights, collect canonical anchor rect per item
+    # 1. Apply highlights, collect canonical anchor rect per item (first highlight)
     link_targets: dict[str, tuple[int, fitz.Rect]] = {}
     for item in cfg.items:
-        spec = item.highlight
-        page_num = spec.get("page", item.page) - 1   # 1-indexed -> 0-indexed
-        page = doc[page_num]
-        anchor = hl.apply(page, spec, render.HIGHLIGHT_COLOR)
-        if anchor is None:
-            print(f"warning: highlight for '{item.key}' produced no match; skipping")
-            continue
-        link_targets[item.key] = (page_num, anchor)
+        anchor = None
+        anchor_page_num = None
+        for i, spec in enumerate(item.highlights):
+            page_num = spec.get("page", item.page) - 1   # 1-indexed -> 0-indexed
+            page = doc[page_num]
+            rect = hl.apply(page, spec, render.HIGHLIGHT_COLOR)
+            if rect is None:
+                print(f"warning: highlight {i} for '{item.key}' produced no match; skipping")
+                continue
+            if anchor is None:
+                anchor = rect
+                anchor_page_num = page_num
+        if anchor is not None:
+            link_targets[item.key] = (anchor_page_num, anchor)
 
     # 2. Sort items by (page, anchor y) so gutter order follows highlight order
     def anchor_y(item: Item) -> float:
