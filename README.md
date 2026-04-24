@@ -53,6 +53,7 @@ Rhythm:
 ```yaml
 source: path/to/source.pdf        # relative to the YAML file
 output: path/to/output.pdf
+output_pages: "1-7"               # optional; trim output to a page range
 
 items:
   - key: my_comment               # stable identifier; referenced by #my_comment

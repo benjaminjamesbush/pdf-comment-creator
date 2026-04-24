@@ -49,6 +49,7 @@ class ReviewConfig:
     source: Path
     output: Path
     items: list[Item] = field(default_factory=list)
+    output_pages: str = ""   # optional 1-indexed range like "1-7"; empty = keep all
 
 
 def _validate_highlight(h: dict, where: str) -> None:
@@ -108,4 +109,5 @@ def load(path: str | Path) -> ReviewConfig:
         source=(base / raw["source"]).resolve(),
         output=(base / raw["output"]).resolve(),
         items=items,
+        output_pages=str(raw.get("output_pages", "")).strip(),
     )

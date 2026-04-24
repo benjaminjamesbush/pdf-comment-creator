@@ -93,8 +93,26 @@ def build_review(config_path: str | Path) -> Path:
                 render.draw_connector(page, x, y, tgt[1])
             render.draw_item(page, x, y, idx, item, resolve_refs)
 
-    # 6. Save
+    # 6. Optionally trim to a page range
+    if cfg.output_pages:
+        start, end = _parse_page_range(cfg.output_pages, num_original)
+        doc.select(list(range(start - 1, end)))
+
+    # 7. Save
     cfg.output.parent.mkdir(parents=True, exist_ok=True)
     doc.save(cfg.output)
     doc.close()
     return cfg.output
+
+
+def _parse_page_range(spec: str, total: int) -> tuple[int, int]:
+    """Parse '1-7' style into (start, end) 1-indexed inclusive. Clamps to [1, total]."""
+    if "-" not in spec:
+        n = int(spec)
+        return n, n
+    a, b = spec.split("-", 1)
+    start = int(a) if a else 1
+    end = int(b) if b else total
+    start = max(1, min(start, total))
+    end = max(start, min(end, total))
+    return start, end
